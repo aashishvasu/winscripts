@@ -5,7 +5,8 @@ param (
     [Alias("h", "?")][switch]$Help
 )
 
-function Show-Help {
+function Show-Help
+{
     Write-Host @"
 Usage: .\SearchTextInFiles.ps1 -SearchString <string> [-TargetDirectory <path>] [-FileExtension <extension>] [-Help]
 
@@ -17,24 +18,30 @@ Parameters:
 "@
 }
 
-if ($Help -or -not $SearchString) {
+if ($Help -or -not $SearchString)
+{
     Show-Help
     exit
 }
 
-try {
+try
+{
     # Get all files in the specified directory with the specified extension
     $FilesToSearch = Get-ChildItem -Path $TargetDirectory -Filter $FileExtension -File -ErrorAction Stop
 
-    foreach ($File in $FilesToSearch) {
+    foreach ($File in $FilesToSearch)
+    {
         # Use Select-String to search for the text string within the file
         $SearchResults = Select-String -Path $File.FullName -Pattern $SearchString -SimpleMatch
 
-        if ($SearchResults) {
+        if ($SearchResults)
+        {
             # Output the file name if a match is found
             Write-Host $File.Name
         }
     }
-} catch {
+}
+catch
+{
     Write-Error "An error occurred: $_"
 }
